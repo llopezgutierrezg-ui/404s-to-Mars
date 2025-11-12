@@ -1,7 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap");
 @font-face {
-  font-family: "Dune";
-  src: url(../assets/Dune_Rise.woff2);
+    font-family: 'Dune';
+    src: url('../assets/Dune_Rise.woff2');
 }
 :root {
   --color-orange: #dc5900;
@@ -19,7 +18,7 @@
 }
 
 body {
-  font-family: "Helvetica", sans-serif;
+  font-family: "Roboto", sans-serif;
   color: var(--color-white);
   height: 100vh;
   overflow: hidden;
@@ -44,16 +43,16 @@ body {
 .content {
   display: flex;
   flex-direction: column;
-  align-items: left;
   justify-content: left;
   height: 100vh;
   text-align: left;
   padding: 20px;
+  margin: 10rem 5rem 5rem 15rem;
 }
 
 h1 {
   font-family: "Dune", sans-serif;
-  font-size: 8rem;
+  font-size: 10rem;
   color: var(--color-white);
   text-shadow: 0 0 20px var(--color-white);
   filter: blur(100px);
@@ -75,7 +74,6 @@ h1 {
     transform: translateY(0);
   }
 }
-}
 
 h2 {
   font-size: 1.5rem;
@@ -87,7 +85,6 @@ h2 {
 
 p {
   max-width: 600px;
-  margin: 0 auto 30px;
   opacity: 0.8;
   line-height: 1.6;
 }
@@ -110,6 +107,8 @@ a.button:hover {
   color: var(--color-blue-dark);
   box-shadow: 0 0 30px var(--color-white);
 }
+
+
 
 /* ====== RESPONSIVE ====== */
 @media (max-width: 600px) {
