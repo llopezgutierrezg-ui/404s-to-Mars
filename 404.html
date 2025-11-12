@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>404 — Sector desconocido</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <!-- Fuentes -->
+    <link href="../assets/Dune_Rise.woff2" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="page" id="page">
+      <!-- canvas for particles -->
+      <canvas
+        id="dust"
+        style="position: absolute; inset: 0; z-index: 1"
+      ></canvas>
+
+      <div
+        class="card"
+        role="main"
+        aria-labelledby="title"
+        aria-describedby="desc"
+      >
+        <div class="left">
+          <div class="dynamic" id="dynamic">Cargando sector…</div>
+          <h1 id="title">404 — Sector desconocido</h1>
+          <h2 id="subtitle">
+            El módulo de navegación no puede identificar esta coordenada
+            marciana.
+          </h2>
+
+          <p class="lead" id="desc">
+            Houston… tenemos un problema. El enlace que has seguido lleva a un
+            punto no cartografiado de Marte. El radar no detecta señales de vida
+            digital aquí; solo polvo y eco.
+          </p>
+
+          <div class="actions" aria-hidden="false">
+            <button
+              class="btn btn-primary"
+              id="homeBtn"
+              title="Volver al centro de control"
+            >
+              Volver al centro de control
+            </button>
+            <button
+              class="btn btn-ghost"
+              id="retryBtn"
+              title="Reintentar escaneo del terreno"
+            >
+              Reintentar escaneo del terreno
+            </button>
+
+            <button
+              class="btn btn-ghost"
+              id="soundToggle"
+              aria-pressed="false"
+              title="Sonido ambiente (muted)"
+            >
+              🔇 Sonido
+            </button>
+          </div>
+
+          <div class="tagline" id="tagline">
+            Regresa a la base para continuar la misión.
+          </div>
+
+          <!-- hidden easter egg -->
+          <div class="easter" id="easter" tabindex="0" aria-hidden="true">
+            .
+          </div>
+        </div>
+
+        <div class="right" id="rightPanel">
+          <div class="hud">
+            <span class="blip"></span>
+            <span id="hudText">TRANSMISIÓN: perdida</span>
+          </div>
+
+          <div class="scene" id="scene" aria-hidden="false">
+              <!-- ground & shadow -->
+              <ellipse
+                cx="130"
+                cy="170"
+                rx="110"
+                ry="20"
+                fill="rgba(0,0,0,0.35)"
+              />
+              <!-- rover body -->
+              <g id="roverGroup" transform="translate(30,20)">
+                <rect
+                  x="30"
+                  y="30"
+                  rx="10"
+                  ry="10"
+                  width="140"
+                  height="60"
+                  fill="#2b2b3a"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+                <rect
+                  x="14"
+                  y="56"
+                  width="176"
+                  height="18"
+                  rx="8"
+                  fill="#15151b"
+                />
+                <!-- cabin / camera turret -->
+                <g id="head" transform="translate(110,18)">
+                  <rect
+                    x="-24"
+                    y="-4"
+                    width="48"
+                    height="30"
+                    rx="6"
+                    fill="#14232b"
+                    stroke="#073340"
+                  />
+                  <circle cx="0" cy="10" r="8" fill="#00d4ff" id="eye" />
+                  <!-- little antenna -->
+                  <rect
+                    x="-2"
+                    y="-30"
+                    width="4"
+                    height="26"
+                    rx="1"
+                    fill="#444"
+                  />
+                  <circle cx="0" cy="-34" r="4" fill="#ff8a3d" />
+                </g>
+                <!-- wheels -->
+                <g id="wheels" transform="translate(0,92)">
+                  <circle cx="30" cy="0" r="18" fill="#261f1b" />
+                  <circle cx="120" cy="0" r="18" fill="#261f1b" />
+                  <circle cx="170" cy="0" r="18" fill="#261f1b" />
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <!-- easter egg modal placeholder -->
+          <div
+            id="eggModal"
+            style="
+              position: absolute;
+              left: 0;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              display: none;
+              align-items: center;
+              justify-content: center;
+              z-index: 7;
+            "
+          >
+            <div
+              style="
+                background: rgba(0, 0, 0, 0.8);
+                padding: 22px;
+                border-radius: 12px;
+                color: #fff;
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                text-align: center;
+                font-family: 'Orbitron', monospace;
+              "
+            >
+              <div style="font-size: 18px; margin-bottom: 10px">
+                Control de misión dice:
+              </div>
+              <div style="font-size: 14px; margin-bottom: 14px">
+                “No te preocupes, el rover solo quería tomar un café. ☕”
+              </div>
+              <button class="btn btn-primary" id="eggClose">Entendido</button>
+            </div>
+          </div>
+
+          <!-- transmission overlay (appears on retry) -->
+          <div class="transmission" id="transmission" aria-hidden="true">
+            <div class="panel">
+              <div style="font-size: 22px; font-weight: 700">
+                TRANSMISIÓN PERDIDA
+              </div>
+              <div class="glitch">Reconectando… » » »</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">© Misión · Página fuera de órbita</div>
+    </div>
+  </body>
+</html>
