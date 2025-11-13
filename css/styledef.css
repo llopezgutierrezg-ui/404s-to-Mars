@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Dune';
-    src: url('../assets/Dune_Rise.woff2');
+  font-family: "Dune";
+  src: url("../assets/Dune_Rise.woff2");
 }
 :root {
   --color-orange: #dc5900;
@@ -8,6 +8,14 @@
   --color-purple: #3f145c;
   --color-black: #000000;
   --color-white: #ffe6d7;
+  /* Variantes RGBA para sombras/efectos con opacidad controlada */
+  --color-orange-rgba: rgba(220, 89, 0, 0.95);
+  --color-blue-dark-rgba: rgba(30, 24, 52, 0.95);
+  --color-purple-rgba: rgba(63, 20, 92, 0.95);
+  --color-white-rgba: rgba(255, 230, 215, 0.95);
+  /* HUD text colors (subtle) */
+  --hud-text: rgba(255, 230, 215, 0.78);
+  --hud-muted: rgba(255, 230, 215, 0.62);
 }
 
 /* ====== RESETEO Y FUENTES ====== */
@@ -17,13 +25,21 @@
   box-sizing: border-box;
 }
 
+html,
 body {
-  font-family: "Roboto", sans-serif;
+  height: 100%;
+}
+
+body {
   color: var(--color-white);
-  height: 100vh;
+  /* fondo base oscuro para evitar cualquier franja blanca si el vídeo falla */
+  background: var(--color-black);
+  min-height: 100vh;
   overflow: hidden;
   position: relative;
-  background: var(--color-black);
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2" fill="%2300d4ff"/><path d="M12 2v3" stroke="%2300d4ff" stroke-width="1.2" stroke-linecap="round"/><path d="M12 22v-3" stroke="%2300d4ff" stroke-width="1.2" stroke-linecap="round"/><path d="M2 12h3" stroke="%2300d4ff" stroke-width="1.2" stroke-linecap="round"/><path d="M22 12h-3" stroke="%2300d4ff" stroke-width="1.2" stroke-linecap="round"/></svg>')
+      20 20,
+    auto;
 }
 
 /* ====== VIDEO DE FONDO ====== */
@@ -31,12 +47,140 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  /* Use viewport units to avoid layout gaps on some browsers */
+  width: 100vw;
+  height: 100vh;
+  display: block; /* remove inline whitespace issues */
   object-fit: cover;
+  /* sit behind the tint overlay and planets */
   z-index: -3;
-  filter: brightness(0.2);
-  filter: blur(2px);
+  /* Combine filters instead of overwriting them */
+  filter: brightness(0.8) contrast(100%) blur(1px);
+}
+
+.video-bg {
+  /* Fallback background in case the video doesn't cover or fails to load */
+  background: linear-gradient(
+    90deg,
+    var(--color-blue-dark) 0%,
+    var(--color-purple) 100%
+  );
+}
+
+/* Soft purple tint overlay above the video but below page content */
+.video-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* Layered overlay: tint, scanlines, vignette */
+  background-image: linear-gradient(
+      120deg,
+      rgba(63, 20, 92, 0.55),
+      rgba(30, 24, 52, 0.35)
+    ),
+    repeating-linear-gradient(
+      transparent 0px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.06) 3px
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0) 45%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  background-size: cover, 100% 3px, cover;
+  background-position: center, 0 0, center;
+  background-repeat: no-repeat, repeat, no-repeat;
+  pointer-events: none; /* no bloquea interacciones */
+  z-index: 99999; /* very high so it sits above HUD, planets, laser, etc. */
+  mix-blend-mode: overlay;
+  /* Animaciones retro + glitch */
+  animation: scanlines 3s linear infinite, tv-flicker 6s ease-in-out infinite,
+    glitch-aberration 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-bg::before {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Scanlines animation: moving effect */
+@keyframes scanlines {
+  from {
+    background-position: center, 0 0, center;
+  }
+  to {
+    background-position: center, 0 80px, center;
+  }
+}
+
+/* TV flicker: opacity shifts for vintage feel */
+@keyframes tv-flicker {
+  0% {
+    opacity: 0.98;
+  }
+  3% {
+    opacity: 1;
+  }
+  7% {
+    opacity: 0.86;
+  }
+  10% {
+    opacity: 0.95;
+  }
+  70% {
+    opacity: 0.98;
+  }
+  100% {
+    opacity: 0.98;
+  }
+}
+
+/* Glitch aberration: RGB shift + skew distortion */
+@keyframes glitch-aberration {
+  0% {
+    transform: skewX(0deg) translateX(0);
+    opacity: 0.98;
+  }
+  2% {
+    transform: skewX(1.2deg) translateX(2px);
+    opacity: 0.95;
+  }
+  4% {
+    transform: skewX(-0.8deg) translateX(-1px);
+    opacity: 1;
+  }
+  6% {
+    transform: skewX(0.5deg) translateX(1px);
+    opacity: 0.92;
+  }
+  8% {
+    transform: skewX(0deg) translateX(0);
+    opacity: 0.98;
+  }
+  45% {
+    transform: skewX(0deg) translateX(0);
+    opacity: 0.98;
+  }
+  48% {
+    transform: skewX(-1.5deg) translateX(-3px);
+    opacity: 0.88;
+  }
+  50% {
+    transform: skewX(1.8deg) translateX(2px);
+    opacity: 0.94;
+  }
+  52% {
+    transform: skewX(-0.6deg) translateX(0);
+    opacity: 0.98;
+  }
+  100% {
+    transform: skewX(0deg) translateX(0);
+    opacity: 0.98;
+  }
 }
 
 /* ====== CONTENIDO ====== */
@@ -47,15 +191,121 @@ body {
   height: 100vh;
   text-align: left;
   padding: 20px;
-  margin: 10rem 5rem 5rem 15rem;
+  /* reducir margen superior para que el contenido no quede empujado fuera de pantalla */
+  margin: 15rem 3rem 3rem 8rem;
 }
 
 h1 {
+  position: relative;
   font-family: "Dune", sans-serif;
-  font-size: 10rem;
+  font-size: 8rem;
   color: var(--color-white);
-  text-shadow: 0 0 20px var(--color-white);
+  text-shadow: 0 0 10px var(--color-white);
   filter: blur(100px);
+  opacity: 0;
+  transform: translateY(6px);
+  /* Reveal inicial + dos capas de glitch para más variación y notoriedad.
+     Ajustes para parpadeo más suave y uso de colores del :root */
+  animation: reveal 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards 120ms,
+    glitch 1.6s linear 900ms infinite, glitch-2 2.8s linear 1.2s infinite;
+  will-change: transform, text-shadow, clip-path, opacity;
+}
+
+/* Capa principal de glitch: movimientos más pronunciados pero con parpadeo suavizado */
+@keyframes glitch {
+  0% {
+    transform: translateX(0) skewX(0);
+    text-shadow: 4px 0 0 var(--color-blue-dark-rgba),
+      -4px 0 0 var(--color-orange-rgba);
+    opacity: 1;
+  }
+  6% {
+    transform: translateX(-4px) skewX(-3deg);
+    text-shadow: 7px 0 0 var(--color-blue-dark-rgba),
+      -7px 0 0 var(--color-orange-rgba);
+    opacity: 0.95; /* ligero descenso, menos abrupto */
+  }
+  12% {
+    transform: translateX(4px) skewX(3deg);
+    text-shadow: -5px 0 0 var(--color-blue-dark-rgba),
+      5px 0 0 var(--color-orange-rgba);
+    opacity: 0.92; /* mantener visibilidad para evitar 'parpadeo raro' */
+  }
+  18% {
+    transform: translateX(-2px) skewX(-1.5deg);
+    text-shadow: 4px 0 0 var(--color-purple-rgba),
+      -4px 0 0 var(--color-blue-dark-rgba);
+    opacity: 0.97;
+  }
+  26% {
+    transform: translateX(0) skewX(0);
+    text-shadow: 2px 0 0 var(--color-blue-dark-rgba),
+      -2px 0 0 var(--color-orange-rgba);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) skewX(0);
+    text-shadow: 2px 0 0 var(--color-blue-dark-rgba),
+      -2px 0 0 var(--color-orange-rgba);
+    opacity: 1;
+  }
+}
+/* Respetar a usuarios que reduzcan movimiento */
+@media (prefers-reduced-motion: reduce) {
+  h1 {
+    animation: reveal 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards 120ms;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    filter: blur(100px);
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+h2 {
+  font-family: "dune", sans-serif;
+  font-size: 1.26rem;
+  color: var(--color-white);
+  font-weight: 500;
+  opacity: 0.9;
+  margin-bottom: 20px;
+  margin-left: 7.5rem;
+  filter: blur(100px);
+  opacity: 0;
+  transform: translateY(6px);
+  animation: reveal 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  animation-delay: 120ms;
+  text-shadow: 0 0 10px var(--color-white);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    filter: blur(100px);
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+p {
+  font-family: "helvetica", sans-serif;
+  font-weight: 400;
+  max-width: 500px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  margin-left: 7.5rem;
   opacity: 0;
   transform: translateY(6px);
   animation: reveal 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
@@ -73,20 +323,6 @@ h1 {
     filter: blur(0);
     transform: translateY(0);
   }
-}
-
-h2 {
-  font-size: 1.5rem;
-  color: var(--color-white);
-  font-weight: 200;
-  opacity: 0.9;
-  margin-bottom: 20px;
-}
-
-p {
-  max-width: 600px;
-  opacity: 0.8;
-  line-height: 1.6;
 }
 
 /* ====== BOTÓN ====== */
@@ -108,8 +344,6 @@ a.button:hover {
   box-shadow: 0 0 30px var(--color-white);
 }
 
-
-
 /* ====== RESPONSIVE ====== */
 @media (max-width: 600px) {
   h1 {
@@ -120,5 +354,224 @@ a.button:hover {
   }
   p {
     font-size: 0.9rem;
+  }
+}
+
+/* ====== PLANETA RECORTADO TOP-LEFT ====== */
+.planet-top-left {
+  position: fixed;
+  left: -1150px; /* parcialmente fuera de pantalla */
+  top: -1200px; /* parcialmente fuera de pantalla */
+  width: 2000px;
+  height: 2000px;
+  border-radius: 50%;
+  overflow: hidden;
+  /* Usar imagen proporcionada como textura del planeta, mantener recorte */
+  background-image: url("https://ik.imagekit.io/morganaruiz/IMG_4418.PNG?updatedAt=1763050824144");
+  background-size: cover;
+  background-position: 0%;
+  background-repeat: no-repeat;
+  z-index: -1; /* detrás del contenido, encima del tint (-2) and video (-3) */
+}
+
+.planet-top-left img,
+.planet-top-left canvas {
+  width: 140%; /* intentional para que quede cortado */
+  height: 140%;
+  object-fit: cover;
+  transform: translate(-10%, -10%);
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .planet-top-left {
+    left: -60px;
+    top: -60px;
+    width: 220px;
+    height: 220px;
+  }
+  .planet-top-left img,
+  .planet-top-left canvas {
+    width: 160%;
+    height: 160%;
+    transform: translate(-12%, -12%);
+  }
+}
+
+@media (max-width: 480px) {
+  .planet-top-left {
+    left: -40px;
+    top: -40px;
+    width: 160px;
+    height: 160px;
+  }
+  .planet-top-left img,
+  .planet-top-left canvas {
+    width: 180%;
+    height: 180%;
+    transform: translate(-18%, -18%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet-top-left {
+    transition: none;
+  }
+}
+
+/* ====== HUD (esquinas): coordenadas y estado de la nave ====== */
+.hud {
+  pointer-events: none; /* no interferir con interacciones */
+}
+.hud-corner {
+  position: fixed;
+  max-width: 140px; /* reducida */
+  background-color: #000000;
+  color: var(--hud-text);
+  padding: 6px 8px; /* más compacta */
+  font-family: monospace, system-ui, monospace;
+  font-size: 0.72rem; /* más pequeña */
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.374);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  opacity: 0.95;
+  z-index: 40;
+}
+
+.hud-corner .hud-title {
+  font-weight: 700;
+  font-size: 0.58rem; /* ajustado */
+  color: var(--hud-muted);
+  opacity: 0.9;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+  letter-spacing: 0.06em;
+}
+.hud-corner .hud-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--hud-text);
+}
+
+.hud-tl {
+  top: 10px;
+  left: 10px;
+}
+.hud-tr {
+  top: 10px;
+  right: 10px;
+}
+.hud-bl {
+  bottom: 10px;
+  left: 10px;
+}
+
+/* Gráfica en esquina inferior izquierda */
+.hud-bl {
+  max-width: 160px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hud-bl #chart-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 230, 215, 0.1);
+}
+
+.hud-br {
+  bottom: 10px;
+  right: 10px;
+}
+
+/* small screens: reduce size */
+@media (max-width: 480px) {
+  .hud-corner {
+    max-width: 120px;
+    font-size: 0.68rem;
+    padding: 5px 8px;
+  }
+  .hud-tl,
+  .hud-tr {
+    top: 8px;
+  }
+  .hud-bl,
+  .hud-br {
+    bottom: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-corner {
+    transition: none;
+  }
+}
+
+/* ====== PLANETA RECORTADO BOTTOM-LEFT ====== */
+.planet-bottom-right {
+  position: fixed;
+  right: -600px; /* parcialmente fuera de pantalla */
+  bottom: -1200px; /* parcialmente fuera de pantalla */
+  width: 1500px;
+  height: 1500px;
+  border-radius: 50%;
+  overflow: hidden;
+  rotate: 20deg;
+  /* Usar la imagen del usuario como textura del planeta */
+  background-image: url("https://ik.imagekit.io/morganaruiz/transparent-Photoroom.png?updatedAt=1763048626290");
+  background-size: cover;
+  background-position: 65% 70%;
+  background-repeat: no-repeat;
+  pointer-events: none; /* no interacciona */
+  z-index: -1; /* detrás del contenido, encima del tint (-2) and video (-3) */
+}
+
+.planet-bottom-right img,
+.planet-bottom-right canvas {
+  width: 140%; /* intentional para que quede cortado */
+  height: 140%;
+  object-fit: cover;
+  transform: translate(10%, 10%);
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .planet-bottom-right {
+    right: -500px;
+    bottom: -500px;
+    width: 220px;
+    height: 220px;
+  }
+  .planet-bottom-right img,
+  .planet-bottom-right canvas {
+    width: 160%;
+    height: 160%;
+    transform: translate(12%, 12%);
+  }
+}
+
+@media (max-width: 480px) {
+  .planet-bottom-right {
+    right: -40px;
+    bottom: -40px;
+    width: 160px;
+    height: 160px;
+  }
+  .planet-bottom-right img,
+  .planet-bottom-right canvas {
+    width: 180%;
+    height: 180%;
+    transform: translate(18%, 18%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet-bottom-right {
+    transition: none;
   }
 }

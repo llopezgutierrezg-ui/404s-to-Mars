@@ -1,0 +1,58 @@
+/* Laser styles (scoped) */
+/* Only includes laser-specific styles to avoid overriding existing site styles */
+.laser-ray {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 2px; /* grosor del rayo (reducido) */
+  height: 18px; /* largo del rayo (reducido) */
+  transform-origin: center center;
+  pointer-events: none;
+  border-radius: 6px;
+  z-index: 9999;
+  /* azul neón */
+  background: linear-gradient(
+    180deg,
+    rgba(200, 255, 255, 1) 0%,
+    rgba(120, 230, 255, 0.95) 40%,
+    rgba(30, 170, 255, 0.95) 100%
+  );
+  box-shadow: 0 0 10px rgba(80, 200, 255, 0.95),
+    0 0 26px rgba(10, 140, 255, 0.75);
+  opacity: 0.98;
+  will-change: transform, opacity;
+}
+
+.laser-spark {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(220, 255, 255, 1) 0%,
+    rgba(150, 240, 255, 0.9) 25%,
+    rgba(40, 180, 255, 0.9) 60%,
+    rgba(40, 180, 255, 0) 61%
+  );
+  box-shadow: 0 0 14px rgba(80, 200, 255, 0.95),
+    0 0 28px rgba(30, 140, 255, 0.75);
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0.95;
+  animation: spark-pop 0.26s ease-out forwards;
+}
+
+@keyframes spark-pop {
+  from {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 0;
+  }
+}

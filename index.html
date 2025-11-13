@@ -5,20 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>404 – Página no encontrada</title>
     <link rel="stylesheet" href="/css/styledef.css" />
+    <link rel="stylesheet" href="/css/laser.css" />
   </head>
   <body>
     <!-- 🎥 VIDEO DE FONDO -->
-    <section>
+    <section class="video-bg">
       <video autoplay muted loop playsinline id="bg-video">
-        <source
-          src="https://ik.imagekit.io/1kpiksaft/New%20Folder/5149094-hd_1080_1350_25fps.mp4"
-          type="video/mp4"
-        />
+        <source src="assets/2611250-uhd_3840_2160_30fps.mp4" type="video/mp4" />
         Tu navegador no soporta vídeo HTML5.
       </video>
     </section>
 
-    <!-- 🌌 CONTENIDO -->
+    <!-- PLANETAS RECORTADOS -->
+    <div class="planet-top-left" aria-hidden="true"></div>
+    <div class="planet-bottom-right" aria-hidden="true"></div>
+
+    <!-- HUD: coordenadas y transmisión -->
+    <div class="hud" aria-hidden="false">
+      <div class="hud-corner hud-tl" role="status" aria-live="polite">
+        <div class="hud-title">Coordenadas</div>
+        <div class="hud-value" id="hud-coords">-- , -- , --</div>
+      </div>
+
+      <div class="hud-corner hud-tr" role="status" aria-live="polite">
+        <div class="hud-title">Transmisión</div>
+        <div class="hud-value" id="hud-tx">Desconocida</div>
+      </div>
+
+      <div class="hud-corner hud-bl">
+        <div class="hud-title">Sensores</div>
+        <canvas id="chart-canvas" width="140" height="90"></canvas>
+      </div>
+    </div>
+    <div class="esfera">
+      <img
+        class="image"
+        src="https://ik.imagekit.io/morganaruiz/transparent-Photoroom.png?updatedAt=1763048626290"
+      /> 
+    </div>
+    <!-- CONTENIDO -->
     <div class="content">
       <h1>404</h1>
       <h2>Coordenadas fuera de rango</h2>
@@ -27,5 +52,8 @@
         comunicaciones con la base están cortadas.
       </p>
     </div>
+
+    <script src="/js/laser.js" defer></script>
+    <script src="/js/scriptdef.js" defer></script>
   </body>
 </html>
