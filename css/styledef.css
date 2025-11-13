@@ -16,6 +16,16 @@
   /* HUD text colors (subtle) */
   --hud-text: rgba(255, 230, 215, 0.78);
   --hud-muted: rgba(255, 230, 215, 0.62);
+  /* Astronaut positioning offsets (adjust these to move parts) */
+  --astronaut-head-top: -13px;
+  --astronaut-head-left: -8px;
+  --astronaut-torso-bottom: 0px;
+  --astronaut-torso-left: 0px;
+  --astronaut-arm-right: 105px;
+  --astronaut-arm-top: -10px;
+  /* Astronaut rotation pivots (transform-origin). Tweak if head/arm rotate off-center */
+  --astronaut-head-origin: 45% 75%;
+  --astronaut-arm-origin: 60% 80%;
 }
 
 /* ====== RESETEO Y FUENTES ====== */
@@ -57,16 +67,6 @@ body {
   /* Combine filters instead of overwriting them */
   filter: brightness(0.8) contrast(100%) blur(1px);
 }
-
-.video-bg {
-  /* Fallback background in case the video doesn't cover or fails to load */
-  background: linear-gradient(
-    90deg,
-    var(--color-blue-dark) 0%,
-    var(--color-purple) 100%
-  );
-}
-
 /* Soft purple tint overlay above the video but below page content */
 .video-bg::before {
   content: "";
@@ -93,18 +93,8 @@ body {
   background-position: center, 0 0, center;
   background-repeat: no-repeat, repeat, no-repeat;
   pointer-events: none; /* no bloquea interacciones */
-  z-index: 99999; /* very high so it sits above HUD, planets, laser, etc. */
-  mix-blend-mode: overlay;
-  /* Animaciones retro + glitch */
-  animation: scanlines 3s linear infinite, tv-flicker 6s ease-in-out infinite,
-    glitch-aberration 4s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .video-bg::before {
-    transition: none;
-    animation: none;
-  }
+  z-index: -2;
+  opacity: 0.6;
 }
 
 /* Scanlines animation: moving effect */
@@ -192,7 +182,7 @@ body {
   text-align: left;
   padding: 20px;
   /* reducir margen superior para que el contenido no quede empujado fuera de pantalla */
-  margin: 15rem 3rem 3rem 8rem;
+  margin: 5rem 3rem 3rem 8rem;
 }
 
 h1 {
@@ -276,7 +266,7 @@ h2 {
   color: var(--color-white);
   font-weight: 500;
   opacity: 0.9;
-  margin-bottom: 20px;
+  margin-bottom: 0.5rem;
   margin-left: 7.5rem;
   filter: blur(100px);
   opacity: 0;
@@ -324,26 +314,6 @@ p {
     transform: translateY(0);
   }
 }
-
-/* ====== BOTÓN ====== */
-a.button {
-  display: inline-block;
-  padding: 12px 24px;
-  background-color: var(--color-orange);
-  color: var(--color-black);
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 20px var(--color-orange);
-}
-
-a.button:hover {
-  background-color: var(--color-white);
-  color: var(--color-blue-dark);
-  box-shadow: 0 0 30px var(--color-white);
-}
-
 /* ====== RESPONSIVE ====== */
 @media (max-width: 600px) {
   h1 {
@@ -355,6 +325,158 @@ a.button:hover {
   p {
     font-size: 0.9rem;
   }
+}
+/* BOTÓN */
+.launch-btn {
+  font-family: "Helvetica";
+  margin-left: 7.4rem;
+  margin-top: 2rem;
+  justify-content: left;
+  position: relative;
+  padding: 14px 40px;
+  font-size: 0.8em;
+  color: #fff;
+  background: #6a0dad;
+  border: 1px solid #b44cff;
+  border-radius: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+
+  width: fit-content;
+  display: block;
+
+  box-shadow: 0 0 10px #b44cff, 0 0 20px #6a0dad;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.launch-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 15px #d79bff, 0 0 30px #a944ff;
+}
+
+.launch-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 5px #6a0dad;
+}
+
+/* EFECTO DE TEMBLOR */
+.launch-btn.shake {
+  animation: shake-btn 0.5s ease-in-out infinite;
+}
+
+@keyframes shake-btn {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* COHETE */
+.rocket {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* LLAMA DEL COHETE */
+.rocket-flame {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 40px;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle, #ffdd55, #ff6622, transparent);
+  border-radius: 50%;
+  filter: blur(3px);
+  opacity: 0;
+}
+
+/* Partículas animadas */
+.rocket-flame.on {
+  animation: flame 0.15s infinite alternate;
+  opacity: 1;
+}
+
+@keyframes flame {
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(-50%) scale(1.7);
+    opacity: 1;
+  }
+}
+
+/* ANIMACIÓN DEL DESPEGUE */
+@keyframes rocket-launch {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-50%, -50px);
+  }
+  50% {
+    transform: translate(-50%, -200px);
+  }
+  100% {
+    transform: translate(-50%, -800px);
+    opacity: 0;
+  }
+}
+
+.rocket.active {
+  animation: rocket-launch 2s ease-out forwards;
+}
+
+/* Cohete */
+.rocket {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Animación del despegue */
+@keyframes rocket-launch {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-50%, -50px);
+  }
+  50% {
+    transform: translate(-50%, -200px);
+  }
+  100% {
+    transform: translate(-50%, -800px);
+    opacity: 0;
+  }
+}
+
+.rocket.active {
+  animation: rocket-launch 2s ease-out forwards;
 }
 
 /* ====== PLANETA RECORTADO TOP-LEFT ====== */
@@ -395,27 +517,6 @@ a.button:hover {
     width: 160%;
     height: 160%;
     transform: translate(-12%, -12%);
-  }
-}
-
-@media (max-width: 480px) {
-  .planet-top-left {
-    left: -40px;
-    top: -40px;
-    width: 160px;
-    height: 160px;
-  }
-  .planet-top-left img,
-  .planet-top-left canvas {
-    width: 180%;
-    height: 180%;
-    transform: translate(-18%, -18%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .planet-top-left {
-    transition: none;
   }
 }
 
@@ -515,15 +616,15 @@ a.button:hover {
 /* ====== PLANETA RECORTADO BOTTOM-LEFT ====== */
 .planet-bottom-right {
   position: fixed;
-  right: -600px; /* parcialmente fuera de pantalla */
-  bottom: -1200px; /* parcialmente fuera de pantalla */
-  width: 1500px;
-  height: 1500px;
+  right: -3150px; /* parcialmente fuera de pantalla */
+  bottom: -2200px; /* parcialmente fuera de pantalla */
+  width: 4000px;
+  height: 4000px;
   border-radius: 50%;
   overflow: hidden;
   rotate: 20deg;
   /* Usar la imagen del usuario como textura del planeta */
-  background-image: url("https://ik.imagekit.io/morganaruiz/transparent-Photoroom.png?updatedAt=1763048626290");
+  background-image: url("https://ik.imagekit.io/morganaruiz/IMG_4417.PNG?updatedAt=1763050851859 ");
   background-size: cover;
   background-position: 65% 70%;
   background-repeat: no-repeat;
@@ -540,38 +641,91 @@ a.button:hover {
   display: block;
 }
 
-@media (max-width: 900px) {
-  .planet-bottom-right {
-    right: -500px;
-    bottom: -500px;
-    width: 220px;
-    height: 220px;
-  }
-  .planet-bottom-right img,
-  .planet-bottom-right canvas {
-    width: 160%;
-    height: 160%;
-    transform: translate(12%, 12%);
-  }
+/* ====== ASTRONAUTA INTERACTIVO ====== */
+.astronaut {
+  position: fixed;
+  bottom: 130px;
+  right: 80px;
+  z-index: 50;
+  pointer-events: none; /* allow clicks to pass through initially */
+  will-change: transform;
 }
 
-@media (max-width: 480px) {
-  .planet-bottom-right {
-    right: -40px;
-    bottom: -40px;
-    width: 160px;
-    height: 160px;
+.astronaut-body {
+  position: relative;
+  width: 240px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.astronaut-torso {
+  position: absolute;
+  bottom: var(--astronaut-torso-bottom);
+  left: calc(50% + var(--astronaut-torso-left));
+  transform: translateX(-50%);
+  width: 120px;
+  height: 160px;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.astronaut-head-container {
+  position: absolute;
+  top: var(--astronaut-head-top);
+  left: calc(50% + var(--astronaut-head-left));
+  transform: translateX(-50%);
+  width: 105px;
+  height: 105px;
+  z-index: 0;
+  transform-origin: var(--astronaut-head-origin);
+  /* Smooth head rotation */
+  transition: transform 0.05s ease-out;
+}
+
+.astronaut-head {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.astronaut-arm {
+  position: absolute;
+  right: var(--astronaut-arm-right);
+  top: var(--astronaut-arm-top);
+  width: 140px;
+  height: 120px;
+  object-fit: contain;
+  z-index: 4;
+  transform-origin: var(--astronaut-arm-origin);
+  /* Smooth arm animation */
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: rotate(0deg);
+}
+
+.astronaut-arm.grabbing {
+  animation: grab-swing 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes grab-swing {
+  0% {
+    transform: rotate(0deg);
   }
-  .planet-bottom-right img,
-  .planet-bottom-right canvas {
-    width: 180%;
-    height: 180%;
-    transform: translate(18%, 18%);
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .planet-bottom-right {
+  .astronaut-head-container,
+  .astronaut-arm {
     transition: none;
+    animation: none;
   }
 }

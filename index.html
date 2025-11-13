@@ -3,9 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>404 – Página no encontrada</title>
+    <title>ERROR 404 – Página no encontrada</title>
     <link rel="stylesheet" href="/css/styledef.css" />
     <link rel="stylesheet" href="/css/laser.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/assets/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body>
     <!-- 🎥 VIDEO DE FONDO -->
@@ -37,23 +55,52 @@
         <canvas id="chart-canvas" width="140" height="90"></canvas>
       </div>
     </div>
-    <div class="esfera">
-      <img
-        class="image"
-        src="https://ik.imagekit.io/morganaruiz/transparent-Photoroom.png?updatedAt=1763048626290"
-      /> 
-    </div>
     <!-- CONTENIDO -->
     <div class="content">
       <h1>404</h1>
       <h2>Coordenadas fuera de rango</h2>
       <p>
-        Tu nave ha aterrizado en un punto no registrado del planeta rojo. Las
-        comunicaciones con la base están cortadas.
+        Houston… tenemos un problema. El enlace que has seguido lleva a un punto
+        no cartografiado de Marte. El radar no detecta señales de vida, solo
+        polvo y eco.
       </p>
+      <button class="launch-btn" onclick="launchSequence()">
+        VOLVER A CENTRO DE CONTROL
+      </button>
+
+      <div class="rocket" id="rocket">
+        🚀
+        <div class="rocket-flame" id="rocketFlame"></div>
+      </div>
+    </div>
+
+    <!-- ASTRONAUTA INTERACTIVO -->
+    <div class="astronaut" id="astronaut">
+      <div class="astronaut-body">
+        <img
+          src="https://ik.imagekit.io/morganaruiz/cuerpo.png?updatedAt=1763051551318"
+          alt="Cuerpo"
+          class="astronaut-torso"
+        />
+        <div class="astronaut-head-container">
+          <img
+            src="https://ik.imagekit.io/morganaruiz/cabeza.png?updatedAt=1763051571591"
+            alt="Cabeza"
+            class="astronaut-head"
+            id="astronaut-head"
+          />
+        </div>
+        <img
+          src="https://ik.imagekit.io/morganaruiz/brazo.png?updatedAt=1763051561555"
+          alt="Brazo"
+          class="astronaut-arm"
+          id="astronaut-arm"
+        />
+      </div>
     </div>
 
     <script src="/js/laser.js" defer></script>
     <script src="/js/scriptdef.js" defer></script>
+    <script src="/js/astronaut.js" defer></script>
   </body>
 </html>

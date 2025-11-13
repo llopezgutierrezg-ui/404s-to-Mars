@@ -193,3 +193,41 @@
     init();
   }
 })();
+
+function launchRocket() {
+  const rocket = document.getElementById("rocket");
+
+  // Reiniciar animación si se vuelve a pulsar
+  rocket.classList.remove("active");
+  void rocket.offsetWidth;
+
+  rocket.classList.add("active");
+}
+
+function launchSequence() {
+  const btn = document.querySelector(".launch-btn");
+  const rocket = document.getElementById("rocket");
+  const flame = document.getElementById("rocketFlame");
+
+  // Paso 1: Botón tiembla durante 1s
+  btn.classList.add("shake");
+
+  setTimeout(() => {
+    btn.classList.remove("shake");
+
+    // Paso 2: aparece la llama del cohete
+    flame.classList.add("on");
+
+    setTimeout(() => {
+      // Paso 3: el cohete despega
+      rocket.classList.remove("active");
+      void rocket.offsetWidth; // reiniciar animación
+      rocket.classList.add("active");
+
+      // La llama desaparece al despegar
+      setTimeout(() => {
+        flame.classList.remove("on");
+      }, 600);
+    }, 700);
+  }, 1000);
+}
