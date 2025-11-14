@@ -42,6 +42,7 @@ Comportamiento del mensaje 404:
 
 Botón “Volver al centro de control”:
     Representa simbólicamente la opción de reiniciar el sistema o regresar a la base.
+    Al pulsar el botón, aparece un cohete que asciende por el centro de la pantalla.
 
 Tipografía usada:
     Dune Rise
