@@ -16,14 +16,14 @@
   /* HUD text colors (subtle) */
   --hud-text: rgba(255, 230, 215, 0.78);
   --hud-muted: rgba(255, 230, 215, 0.62);
-  /* Astronaut positioning offsets (adjust these to move parts) */
+  /* Astronaut positioning offsets */
   --astronaut-head-top: -13px;
   --astronaut-head-left: -8px;
   --astronaut-torso-bottom: 0px;
   --astronaut-torso-left: 0px;
   --astronaut-arm-right: 105px;
   --astronaut-arm-top: -10px;
-  /* Astronaut rotation pivots (transform-origin). Tweak if head/arm rotate off-center */
+  /* Astronaut rotation pivots */
   --astronaut-head-origin: 45% 75%;
   --astronaut-arm-origin: 60% 80%;
 }
@@ -42,7 +42,6 @@ body {
 
 body {
   color: var(--color-white);
-  /* fondo base oscuro para evitar cualquier franja blanca si el vídeo falla */
   background: var(--color-black);
   min-height: 100vh;
   overflow: hidden;
@@ -57,23 +56,19 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  /* Use viewport units to avoid layout gaps on some browsers */
   width: 100vw;
   height: 100vh;
-  display: block; /* remove inline whitespace issues */
+  display: block;
   object-fit: cover;
-  /* sit behind the tint overlay and planets */
   z-index: -3;
-  /* Combine filters instead of overwriting them */
   filter: brightness(0.8) contrast(100%) blur(1px);
 }
-/* Soft purple tint overlay above the video but below page content */
+
 .video-bg::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  /* Layered overlay: tint, scanlines, vignette */
   background-image: linear-gradient(
       120deg,
       rgba(63, 20, 92, 0.55),
@@ -92,85 +87,9 @@ body {
   background-size: cover, 100% 3px, cover;
   background-position: center, 0 0, center;
   background-repeat: no-repeat, repeat, no-repeat;
-  pointer-events: none; /* no bloquea interacciones */
+  pointer-events: none;
   z-index: -2;
   opacity: 0.6;
-}
-
-/* Scanlines animation: moving effect */
-@keyframes scanlines {
-  from {
-    background-position: center, 0 0, center;
-  }
-  to {
-    background-position: center, 0 80px, center;
-  }
-}
-
-/* TV flicker: opacity shifts for vintage feel */
-@keyframes tv-flicker {
-  0% {
-    opacity: 0.98;
-  }
-  3% {
-    opacity: 1;
-  }
-  7% {
-    opacity: 0.86;
-  }
-  10% {
-    opacity: 0.95;
-  }
-  70% {
-    opacity: 0.98;
-  }
-  100% {
-    opacity: 0.98;
-  }
-}
-
-/* Glitch aberration: RGB shift + skew distortion */
-@keyframes glitch-aberration {
-  0% {
-    transform: skewX(0deg) translateX(0);
-    opacity: 0.98;
-  }
-  2% {
-    transform: skewX(1.2deg) translateX(2px);
-    opacity: 0.95;
-  }
-  4% {
-    transform: skewX(-0.8deg) translateX(-1px);
-    opacity: 1;
-  }
-  6% {
-    transform: skewX(0.5deg) translateX(1px);
-    opacity: 0.92;
-  }
-  8% {
-    transform: skewX(0deg) translateX(0);
-    opacity: 0.98;
-  }
-  45% {
-    transform: skewX(0deg) translateX(0);
-    opacity: 0.98;
-  }
-  48% {
-    transform: skewX(-1.5deg) translateX(-3px);
-    opacity: 0.88;
-  }
-  50% {
-    transform: skewX(1.8deg) translateX(2px);
-    opacity: 0.94;
-  }
-  52% {
-    transform: skewX(-0.6deg) translateX(0);
-    opacity: 0.98;
-  }
-  100% {
-    transform: skewX(0deg) translateX(0);
-    opacity: 0.98;
-  }
 }
 
 /* ====== CONTENIDO ====== */
@@ -181,7 +100,6 @@ body {
   height: 100vh;
   text-align: left;
   padding: 20px;
-  /* reducir margen superior para que el contenido no quede empujado fuera de pantalla */
   margin: 5rem 3rem 3rem 8rem;
 }
 
@@ -194,14 +112,11 @@ h1 {
   filter: blur(100px);
   opacity: 0;
   transform: translateY(6px);
-  /* Reveal inicial + dos capas de glitch para más variación y notoriedad.
-     Ajustes para parpadeo más suave y uso de colores del :root */
   animation: reveal 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards 120ms,
     glitch 1.6s linear 900ms infinite, glitch-2 2.8s linear 1.2s infinite;
   will-change: transform, text-shadow, clip-path, opacity;
 }
 
-/* Capa principal de glitch: movimientos más pronunciados pero con parpadeo suavizado */
 @keyframes glitch {
   0% {
     transform: translateX(0) skewX(0);
@@ -213,13 +128,13 @@ h1 {
     transform: translateX(-4px) skewX(-3deg);
     text-shadow: 7px 0 0 var(--color-blue-dark-rgba),
       -7px 0 0 var(--color-orange-rgba);
-    opacity: 0.95; /* ligero descenso, menos abrupto */
+    opacity: 0.95;
   }
   12% {
     transform: translateX(4px) skewX(3deg);
     text-shadow: -5px 0 0 var(--color-blue-dark-rgba),
       5px 0 0 var(--color-orange-rgba);
-    opacity: 0.92; /* mantener visibilidad para evitar 'parpadeo raro' */
+    opacity: 0.92;
   }
   18% {
     transform: translateX(-2px) skewX(-1.5deg);
@@ -240,7 +155,6 @@ h1 {
     opacity: 1;
   }
 }
-/* Respetar a usuarios que reduzcan movimiento */
 @media (prefers-reduced-motion: reduce) {
   h1 {
     animation: reveal 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards 120ms;
@@ -262,7 +176,7 @@ h1 {
 
 h2 {
   font-family: "dune", sans-serif;
-  font-size: 1.26rem;
+  font-size: clamp(0.8rem, 2vw, 1.26rem);
   color: var(--color-white);
   font-weight: 500;
   opacity: 0.9;
@@ -293,7 +207,7 @@ p {
   font-family: "helvetica", sans-serif;
   font-weight: 400;
   max-width: 500px;
-  font-size: 0.8rem;
+  font-size: clamp(0.5rem, 2vw, 0.8rem);
   line-height: 1.6;
   margin-left: 7.5rem;
   opacity: 0;
@@ -323,7 +237,25 @@ p {
     font-size: 1.2rem;
   }
   p {
-    font-size: 0.9rem;
+    font-size: clamp(0.5rem, 2vw, 1rem);
+  }
+}
+/* small screens: reduce size */
+@media (max-width: 480px) {
+  .content {
+    margin: 4rem 1.5rem 2rem 1.5rem;
+  }
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 1rem;
+    margin-left: 0;
+  }
+  p {
+    font-size: 0.8rem;
+    margin-left: 0;
+    max-width: 100%;
   }
 }
 /* BOTÓN */
@@ -391,20 +323,6 @@ p {
   font-size: 3rem;
   opacity: 0;
   transition: opacity 0.3s ease;
-}
-
-/* LLAMA DEL COHETE */
-.rocket-flame {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 40px;
-  width: 14px;
-  height: 14px;
-  background: radial-gradient(circle, #ffdd55, #ff6622, transparent);
-  border-radius: 50%;
-  filter: blur(3px);
-  opacity: 0;
 }
 
 /* Partículas animadas */
@@ -507,10 +425,10 @@ p {
 
 @media (max-width: 900px) {
   .planet-top-left {
-    left: -60px;
-    top: -60px;
-    width: 220px;
-    height: 220px;
+    left: -550px;
+    top: -550px;
+    width: 1000px;
+    height: 1000px;
   }
   .planet-top-left img,
   .planet-top-left canvas {
@@ -727,5 +645,11 @@ p {
   .astronaut-arm {
     transition: none;
     animation: none;
+  }
+}
+@media (max-width: 600px) {
+  .astronaut {
+    bottom: 50px;
+    right: 30px;
   }
 }
