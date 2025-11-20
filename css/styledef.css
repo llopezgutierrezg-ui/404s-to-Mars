@@ -249,13 +249,29 @@ p {
     font-size: 3rem;
   }
   h2 {
-    font-size: 1rem;
+    font-size: 0.7rem;
     margin-left: 0;
   }
   p {
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     margin-left: 0;
     max-width: 100%;
+  }
+  .astronaut {
+    position: relative;
+    left: 35vw;
+    height: 25%;
+  }
+  .content .launch-btn{
+    right: 10vw;
+    font-size: 0.6rem;
+  }
+  .planet-top-left { 
+    position: absolute;
+    left: -250px;
+    top: -250px;
+    width: 500px;
+    height: 500px;
   }
 }
 /* BOTÓN */
