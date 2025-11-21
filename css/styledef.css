@@ -262,16 +262,52 @@ p {
     left: 35vw;
     height: 25%;
   }
-  .content .launch-btn{
+  .content .launch-btn {
     right: 10vw;
     font-size: 0.6rem;
   }
-  .planet-top-left { 
+  .planet-top-left {
     position: absolute;
-    left: -250px;
-    top: -250px;
+    left: -300px;
+    top: -300px;
     width: 500px;
     height: 500px;
+  }
+}
+@media (max-width: 960px) {
+  .content {
+    margin: 4rem 1.5rem 2rem 1.5rem;
+  }
+  h1 {
+    font-size: 5rem;
+  }
+  h2 {
+    font-size: 1rem;
+    margin-left: 0;
+  }
+  p {
+    font-size: 0.7rem;
+    margin-left: 0;
+    max-width: 25rem;
+  }
+}
+@media (min-width: 1500px) {
+  .content {
+    margin: 8rem 1.5rem 2rem 20rem;
+  }
+  h1 {
+    font-size: 10rem;
+  }
+  h2 {
+    font-size: 2rem;
+    margin-left: 0;
+    margin-left: 9rem;
+  }
+  p {
+    font-size: 1rem;
+    margin-left: 0;
+    max-width: 60%;
+    margin-left: 9rem;
   }
 }
 /* BOTÓN */
@@ -282,7 +318,7 @@ p {
   justify-content: left;
   position: relative;
   padding: 14px 40px;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   color: #fff;
   background: #6a0dad;
   border: 1px solid #b44cff;
@@ -306,7 +342,12 @@ p {
   transform: scale(0.95);
   box-shadow: 0 0 5px #6a0dad;
 }
-
+@media (min-width: 1500px) {
+  .launch-btn {
+    font-size: 1rem;
+    margin-left: 9rem;
+  }
+}
 /* EFECTO DE TEMBLOR */
 .launch-btn.shake {
   animation: shake-btn 0.5s ease-in-out infinite;
@@ -416,35 +457,34 @@ p {
 /* ====== PLANETA RECORTADO TOP-LEFT ====== */
 .planet-top-left {
   position: fixed;
-  left: -1150px; /* parcialmente fuera de pantalla */
-  top: -1200px; /* parcialmente fuera de pantalla */
+  left: -1150px;
+  top: -1200px;
   width: 2000px;
   height: 2000px;
   border-radius: 50%;
   overflow: hidden;
-  /* Usar imagen proporcionada como textura del planeta, mantener recorte */
   background-image: url("https://ik.imagekit.io/morganaruiz/IMG_4418.PNG?updatedAt=1763050824144");
   background-size: cover;
   background-position: 0%;
   background-repeat: no-repeat;
-  z-index: -1; /* detrás del contenido, encima del tint (-2) and video (-3) */
+  z-index: -1;
 }
 
 .planet-top-left img,
 .planet-top-left canvas {
-  width: 140%; /* intentional para que quede cortado */
+  width: 140%;
   height: 140%;
   object-fit: cover;
   transform: translate(-10%, -10%);
   display: block;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .planet-top-left {
     left: -550px;
     top: -550px;
-    width: 1000px;
-    height: 1000px;
+    width: 900px;
+    height: 900px;
   }
   .planet-top-left img,
   .planet-top-left canvas {
@@ -456,16 +496,16 @@ p {
 
 /* ====== HUD (esquinas): coordenadas y estado de la nave ====== */
 .hud {
-  pointer-events: none; /* no interferir con interacciones */
+  pointer-events: none;
 }
 .hud-corner {
   position: fixed;
-  max-width: 140px; /* reducida */
+  max-width: 140px;
   background-color: #000000;
   color: var(--hud-text);
-  padding: 6px 8px; /* más compacta */
+  padding: 6px 8px;
   font-family: monospace, system-ui, monospace;
-  font-size: 0.72rem; /* más pequeña */
+  font-size: 0.72rem;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.374);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
@@ -476,7 +516,7 @@ p {
 
 .hud-corner .hud-title {
   font-weight: 700;
-  font-size: 0.58rem; /* ajustado */
+  font-size: 0.58rem;
   color: var(--hud-muted);
   opacity: 0.9;
   text-transform: uppercase;
@@ -550,25 +590,24 @@ p {
 /* ====== PLANETA RECORTADO BOTTOM-LEFT ====== */
 .planet-bottom-right {
   position: fixed;
-  right: -3150px; /* parcialmente fuera de pantalla */
-  bottom: -2200px; /* parcialmente fuera de pantalla */
+  right: -3150px;
+  bottom: -2200px;
   width: 4000px;
   height: 4000px;
   border-radius: 50%;
   overflow: hidden;
   rotate: 20deg;
-  /* Usar la imagen del usuario como textura del planeta */
   background-image: url("https://ik.imagekit.io/morganaruiz/IMG_4417.PNG?updatedAt=1763050851859 ");
   background-size: cover;
   background-position: 65% 70%;
   background-repeat: no-repeat;
-  pointer-events: none; /* no interacciona */
-  z-index: -1; /* detrás del contenido, encima del tint (-2) and video (-3) */
+  pointer-events: none;
+  z-index: -1;
 }
 
 .planet-bottom-right img,
 .planet-bottom-right canvas {
-  width: 140%; /* intentional para que quede cortado */
+  width: 140%;
   height: 140%;
   object-fit: cover;
   transform: translate(10%, 10%);
@@ -581,7 +620,7 @@ p {
   bottom: 130px;
   right: 80px;
   z-index: 50;
-  pointer-events: none; /* allow clicks to pass through initially */
+  pointer-events: none;
   will-change: transform;
 }
 
@@ -615,7 +654,6 @@ p {
   height: 105px;
   z-index: 0;
   transform-origin: var(--astronaut-head-origin);
-  /* Smooth head rotation */
   transition: transform 0.05s ease-out;
 }
 
@@ -635,7 +673,6 @@ p {
   object-fit: contain;
   z-index: 4;
   transform-origin: var(--astronaut-arm-origin);
-  /* Smooth arm animation */
   transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform: rotate(0deg);
 }
@@ -663,7 +700,7 @@ p {
     animation: none;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 1080px) {
   .astronaut {
     bottom: 50px;
     right: 30px;
